@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "353077948996",
+    "firebase_url": "https://app-de-eventos-c1c50-default-rtdb.firebaseio.com",
+    "project_id": "app-de-eventos-c1c50",
+    "storage_bucket": "app-de-eventos-c1c50.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353077948996:android:408551f76c9471e66e4211",
+        "android_client_info": {
+          "package_name": "com.example.app_eventos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353077948996-3aepk6cvgtehdbili8oajbn9a4fg6s8c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxxbyxIcoHmJjs1zf6CckqMMEYWOZ3tEE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353077948996-3aepk6cvgtehdbili8oajbn9a4fg6s8c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
