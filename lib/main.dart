@@ -10,6 +10,7 @@ void main() async {
   );
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       onGenerateRoute: AppRouter.generateRoute,
-      initialRoute: '/login',
+      initialRoute: '/carga',  // Pantalla de carga como ruta inicial
       debugShowCheckedModeBanner: false,
     );
   }
