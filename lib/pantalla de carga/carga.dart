@@ -21,28 +21,27 @@ class _PantallaDeCargaState extends State<PantallaDeCarga> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFF008080),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.calendar_today,
-              size: 150,
-              color: Colors.blue,
+            Image.asset(
+              'assets/logo.png',
+              height: 150,
             ),
             const SizedBox(height: 20),
             const Text(
-              'Bienvenido',
+              'Planify',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
             const SizedBox(height: 20),
             LoadingAnimationWidget.inkDrop(
-              color: Colors.blue,
+              color: Colors.white,
               size: 50,
             ),
           ],

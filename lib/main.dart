@@ -17,13 +17,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'App eventos',
+      title: 'Planify',
       theme: ThemeData(
+        fontFamily: 'Poppins', // Asegúrate de esta línea
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       onGenerateRoute: AppRouter.generateRoute,
-      initialRoute: '/carga',  // Pantalla de carga como ruta inicial
+      initialRoute: '/carga',
       debugShowCheckedModeBanner: false,
     );
   }
