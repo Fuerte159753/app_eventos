@@ -13,12 +13,12 @@ class _InicioPageState extends State<InicioPage> {
     return Scaffold(
       drawer: const MenuLateral(),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(250.0), // Altura del AppBar
+        preferredSize: const Size.fromHeight(250.0),
         child: AppBar(
           title: const Text(
             'Eventos',
             style: TextStyle(
-              color: Colors.white, // Cambiar color del texto a blanco
+              color: Colors.white,
             ),
           ),
           centerTitle: true,
@@ -27,7 +27,7 @@ class _InicioPageState extends State<InicioPage> {
               return IconButton(
                 icon: const Icon(
                   Icons.menu,
-                  color: Colors.white, // Cambiar color del icono a blanco
+                  color: Colors.white,
                 ),
                 onPressed: () {
                   Scaffold.of(context).openDrawer();
@@ -38,12 +38,12 @@ class _InicioPageState extends State<InicioPage> {
           flexibleSpace: Stack(
             children: [
               Positioned(
-                top: 50, // Ajusta la posición vertical más arriba
+                top: 50,
                 left: 0,
                 right: 0,
                 child: Container(
-                  height: 150, // Altura del color más claro
-                  color: const Color(0xFF90cfc4), // Color más claro
+                  height: 150,
+                  color: const Color(0xFF90cfc4),
                 ),
               ),
               ClipPath(
