@@ -1,7 +1,33 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class MenuLateral extends StatelessWidget {
+class MenuLateral extends StatefulWidget {
   const MenuLateral({Key? key}) : super(key: key);
+
+  @override
+  _MenuLateralState createState() => _MenuLateralState();
+}
+
+class _MenuLateralState extends State<MenuLateral> {
+  Future<Map<String, String?>> _getUserInfo() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('usuarios')
+            .doc(user.uid)
+            .get();
+
+        String? nombre = userDoc['nombre'];
+
+        return {'nombre': nombre};
+      }
+    } catch (e) {
+      print("Error al obtener los datos del usuario: $e");
+    }
+    return {'nombre': 'Nombre'};
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +45,11 @@ class MenuLateral extends StatelessWidget {
                 color: Color(0xFF90cfc4),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 20, top: 40), 
+                padding: const EdgeInsets.only(left: 20, top: 40),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       radius: 30,
                       backgroundColor: Color(0xFF58bcb0),
                       child: Icon(
@@ -34,25 +59,43 @@ class MenuLateral extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 20),
-                    const Text(
-                      'Nombre del usuario',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    FutureBuilder<Map<String, String?>>(
+                      future: _getUserInfo(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return const Text(
+                            'Error al cargar usuario',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        } else {
+                          String nombre = snapshot.data?['nombre'] ?? 'Nombre';
+                          return Text(
+                            '$nombre',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ],
                 ),
               ),
             ),
           ),
-          const SizedBox(
-              height: 40),
+          const SizedBox(height: 40),
           ListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 30.0),
-            leading: Icon(Icons.event, color: Color(0xFF008080), size: 40),
-            title: Text('Eventos',
+            leading: const Icon(Icons.event, color: Color(0xFF008080), size: 40),
+            title: const Text('Eventos',
                 style: TextStyle(fontSize: 16, color: Color(0xFF008080))),
             onTap: () {
               Navigator.pop(context);
@@ -67,8 +110,8 @@ class MenuLateral extends StatelessWidget {
           ListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 30.0),
             leading:
-                Icon(Icons.calendar_today, color: Color(0xFF008080), size: 40),
-            title: Text('Calendario',
+                const Icon(Icons.calendar_today, color: Color(0xFF008080), size: 40),
+            title: const Text('Calendario',
                 style: TextStyle(fontSize: 16, color: Color(0xFF008080))),
             onTap: () {
               Navigator.pop(context);
@@ -83,8 +126,8 @@ class MenuLateral extends StatelessWidget {
           ListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 30.0),
             leading:
-                Icon(Icons.notifications, color: Color(0xFF008080), size: 40),
-            title: Text('Notificaciones',
+                const Icon(Icons.notifications, color: Color(0xFF008080), size: 40),
+            title: const Text('Notificaciones',
                 style: TextStyle(fontSize: 16, color: Color(0xFF008080))),
             onTap: () {
               Navigator.pop(context);

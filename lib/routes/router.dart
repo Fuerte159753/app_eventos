@@ -1,3 +1,4 @@
+import 'package:app_eventos/app/calendario/calendario.dart';
 import 'package:app_eventos/app/inicio.dart';
 import 'package:app_eventos/app/new/new.dart';
 import 'package:app_eventos/app/perfil/perfil.dart';
@@ -21,6 +22,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const PerfilPage());
       case '/addevento':
         return MaterialPageRoute(builder: (_) => const NewPage());
+      case '/calendario':
+        return MaterialPageRoute(builder: (_) => CalendarPage());
       default:
         return MaterialPageRoute(builder: (_) => const LoginPage());
     }
