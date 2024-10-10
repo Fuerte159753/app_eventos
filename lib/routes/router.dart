@@ -6,9 +6,12 @@ import 'package:app_eventos/pantalla%20de%20carga/carga.dart';
 import 'package:flutter/material.dart';
 import 'package:app_eventos/login/login.dart';
 import 'package:app_eventos/registro/registro.dart';
+import 'package:app_eventos/auth/auth_service.dart'; // Importar AuthService
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    final authService = AuthService(); // Instancia de AuthService
+
     switch (settings.name) {
       case '/carga':
         return MaterialPageRoute(builder: (_) => const PantallaDeCarga());
@@ -17,15 +20,35 @@ class AppRouter {
       case '/registro':
         return MaterialPageRoute(builder: (_) => const RegistroScreen());
       case '/inicio':
-        return MaterialPageRoute(builder: (_) => const InicioPage());
+        if (authService.isAuthenticated()) {
+          return MaterialPageRoute(builder: (_) => const InicioPage());
+        } else {
+          return _redirectToLogin();
+        }
       case '/perfil':
-        return MaterialPageRoute(builder: (_) => const PerfilPage());
+        if (authService.isAuthenticated()) {
+          return MaterialPageRoute(builder: (_) => const PerfilPage());
+        } else {
+          return _redirectToLogin();
+        }
+
       case '/addevento':
-        return MaterialPageRoute(builder: (_) => const NewPage());
+        if (authService.isAuthenticated()) {
+          return MaterialPageRoute(builder: (_) => const NewPage());
+        } else {
+          return _redirectToLogin();
+        }
       case '/calendario':
-        return MaterialPageRoute(builder: (_) => CalendarPage());
+        if (authService.isAuthenticated()) {
+          return MaterialPageRoute(builder: (_) => CalendarPage());
+        } else {
+          return _redirectToLogin();
+        }
       default:
         return MaterialPageRoute(builder: (_) => const LoginPage());
     }
+  }
+  static MaterialPageRoute _redirectToLogin() {
+    return MaterialPageRoute(builder: (_) => const LoginPage());
   }
 }
