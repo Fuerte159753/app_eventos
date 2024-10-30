@@ -6,12 +6,11 @@ import 'package:app_eventos/pantalla%20de%20carga/carga.dart';
 import 'package:flutter/material.dart';
 import 'package:app_eventos/login/login.dart';
 import 'package:app_eventos/registro/registro.dart';
-import 'package:app_eventos/auth/auth_service.dart'; // Importar AuthService
+import 'package:app_eventos/auth/auth_service.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    final authService = AuthService(); // Instancia de AuthService
-
+    final authService = AuthService();
     switch (settings.name) {
       case '/carga':
         return MaterialPageRoute(builder: (_) => const PantallaDeCarga());

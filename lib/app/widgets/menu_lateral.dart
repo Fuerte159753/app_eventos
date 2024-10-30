@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:app_eventos/app/widgets/menu_fuctions.dart';
 
 class MenuLateral extends StatefulWidget {
-  const MenuLateral({Key? key}) : super(key: key);
+  const MenuLateral({super.key});
 
   @override
   _MenuLateralState createState() => _MenuLateralState();
@@ -76,7 +77,7 @@ class _MenuLateralState extends State<MenuLateral> {
                         } else {
                           String nombre = snapshot.data?['nombre'] ?? 'Nombre';
                           return Text(
-                            '$nombre',
+                            nombre,
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -125,13 +126,12 @@ class _MenuLateralState extends State<MenuLateral> {
           ),
           ListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 30.0),
-            leading:
-                const Icon(Icons.notifications, color: Color(0xFF008080), size: 40),
-            title: const Text('Notificaciones',
+            leading: const Icon(Icons.sync, color: Color(0xFF008080), size: 40),
+            title: const Text('Sincronizar',
                 style: TextStyle(fontSize: 16, color: Color(0xFF008080))),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/notificaciones');
+            onTap: () async {
+              // Llamar a la función de sincronización
+              await sincronizarEventosConGoogleCalendar();
             },
           ),
         ],

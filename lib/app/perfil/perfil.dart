@@ -1,10 +1,9 @@
-import 'dart:io'; // Importa solo para móviles
+import 'dart:io'; 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart' show kIsWeb; // Para detectar si es web
+import 'package:flutter/foundation.dart' show kIsWeb; 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:app_eventos/app/widgets/menu_lateral.dart';
 import 'package:app_eventos/app/perfil/perfil_functions.dart';
 
@@ -16,6 +15,8 @@ class PerfilPage extends StatefulWidget {
 }
 
 class _PerfilPageState extends State<PerfilPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   String? _nombre;
   String? _apellido;
   String? _email;
@@ -56,150 +57,160 @@ class _PerfilPageState extends State<PerfilPage> {
       });
     }
   }
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      if (kIsWeb) {
-        await _uploadImageWeb(pickedFile);
-      } else {
-        final file = File(pickedFile.path);
-        await _uploadImageMobile(file);
-      }
-    }
-  }
-  Future<void> _uploadImageWeb(XFile file) async {
-    try {
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        final storageRef = FirebaseStorage.instance.ref().child('fotos/${user.uid}.jpg');
-        await storageRef.putData(await file.readAsBytes());
-        final downloadUrl = await storageRef.getDownloadURL();
-        await FirebaseFirestore.instance.collection('usuarios').doc(user.uid).update({
-          'photo_url': downloadUrl,
-        });
-
-        setState(() {
-          _photoUrl = downloadUrl;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _errorMessage = 'Error al subir la imagen: ${e.toString()}';
-      });
-    }
-  }
-  Future<void> _uploadImageMobile(File file) async {
-    try {
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        final storageRef = FirebaseStorage.instance.ref().child('fotos/${user.uid}.jpg');
-        await storageRef.putFile(file);
-        final downloadUrl = await storageRef.getDownloadURL();
-
-        await FirebaseFirestore.instance.collection('usuarios').doc(user.uid).update({
-          'photo_url': downloadUrl,
-        });
-
-        setState(() {
-          _photoUrl = downloadUrl;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _errorMessage = 'Error al subir la imagen: ${e.toString()}';
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const MenuLateral(),
-      appBar: AppBar(
-        title: const Text('Perfil'),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          },
-        ),
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _errorMessage != null
-              ? Center(child: Text(_errorMessage!))
-              : Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 20),
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundImage: _photoUrl != null
-                            ? NetworkImage(_photoUrl!)
-                            : null,
-                        child: _photoUrl == null
-                            ? const Icon(
-                                Icons.person,
-                                size: 50,
-                                color: Colors.white,
-                              )
-                            : null,
-                        backgroundColor: Colors.grey,
-                      ),
-                      const SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: _pickImage, // Subir nueva foto
-                        child: const Text('Cambiar foto de perfil'),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Información del usuario',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      _buildUserInfo('Nombre', _nombre),
-                      _buildUserInfo('Apellido', _apellido),
-                      _buildUserInfo('Email', _email),
-                      _buildUserInfo('Fecha de nacimiento', _fechaNacimiento),
-                    ],
-                  ),
-                ),
-    );
-  }
+    final screenWidth = MediaQuery.of(context).size.width;
 
-  Widget _buildUserInfo(String label, String? value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+    return Scaffold(
+      key: _scaffoldKey,
+      drawer: const MenuLateral(),
+      body: Stack(
         children: [
-          Text(
-            '$label: ',
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: AppBar(
+              title: const Text(
+                'Perfil',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              centerTitle: true,
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.menu,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  // Abrir el menú lateral
+                  _scaffoldKey.currentState?.openDrawer();
+                },
+              ),
+              flexibleSpace: Stack(
+                children: [
+                  Positioned(
+                    top: 50,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      height: 150,
+                      color: const Color(0xFF90cfc4),
+                    ),
+                  ),
+                  ClipPath(
+                    clipper: TopHalfCircleClipper(),
+                    child: Container(
+                      height: 150,
+                      color: const Color(0xFF008080),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          Text(
-            value ?? 'Desconocido',
-            style: const TextStyle(
-              fontSize: 18,
-              color: Colors.grey,
+
+          
+          Positioned(
+            top: 120, 
+            left: 16,
+            right: 16,
+            child: Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 10),
+                    CircleAvatar(
+                      radius: screenWidth * 0.1,
+                      backgroundImage:
+                          _photoUrl != null ? NetworkImage(_photoUrl!) : null,
+                      child: _photoUrl == null
+                          ? const Icon(
+                              Icons.person,
+                              size: 50,
+                              color: Colors.white,
+                            )
+                          : null,
+                      backgroundColor: Colors.grey,
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Información del usuario',
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.04,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF37807e),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    _buildUserInfo('Nombre', _nombre, screenWidth),
+                    _buildUserInfo('Apellido', _apellido, screenWidth),
+                    _buildUserInfo('Email', _email, screenWidth),
+                    _buildUserInfo('Fecha de nacimiento', _fechaNacimiento, screenWidth),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
       ),
     );
   }
+
+  Widget _buildUserInfo(String label, String? value, double screenWidth) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            '$label: ',
+            style: TextStyle(
+              fontSize: screenWidth * 0.035,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF37807e),
+            ),
+          ),
+          Text(
+            value ?? 'Desconocido',
+            style: TextStyle(
+              fontSize: screenWidth * 0.035,
+              color: Colors.grey.shade700,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TopHalfCircleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, size.height - 100);
+    path.quadraticBezierTo(
+      size.width / 2,
+      size.height + 100,
+      size.width,
+      size.height - 100,
+    );
+    path.lineTo(size.width, 0);
+    path.lineTo(0, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

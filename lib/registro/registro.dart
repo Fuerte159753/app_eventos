@@ -104,7 +104,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Header con título centrado "Regístrate"
-            Container(
+            SizedBox(
               height: 180,
               child: Stack(
                 children: [

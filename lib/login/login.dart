@@ -15,18 +15,15 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   String? _errorMessage;
   bool _isLoading = false;
-  bool _isObscured = true; // Controla la visibilidad de la contraseña
+  bool _isObscured = true;
 
   String? validateInputs() {
     final email = _emailController.text;
     final password = _passwordController.text;
 
-    // Verificar si el correo electrónico es válido
     if (email.isEmpty || !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
       return 'Por favor, introduce un correo electrónico válido.';
     }
-
-    // Verificar si la contraseña está vacía
     if (password.isEmpty) {
       return 'Por favor, introduce tu contraseña.';
     }
@@ -124,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Sección superior con el logo y fondo
-            Container(
+            SizedBox(
               height: 220,
               child: Stack(
                 children: [
@@ -154,7 +151,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 30), // Espacio entre logo y card
 
-            // Formulario de inicio de sesión con bordes redondeados
             Container(
               height: 500, // Mantener la altura del formulario
               decoration: const BoxDecoration(
@@ -220,7 +216,7 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFFF2ECEC).withOpacity(0.7),
-                        hintText: '****',
+                        hintText: '*********',
                         hintStyle: const TextStyle(color: Colors.grey),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),

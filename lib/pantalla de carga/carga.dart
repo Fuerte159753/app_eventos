@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class PantallaDeCarga extends StatefulWidget {
-  const PantallaDeCarga({Key? key}) : super(key: key);
+  const PantallaDeCarga({super.key});
 
   @override
   _PantallaDeCargaState createState() => _PantallaDeCargaState();
@@ -21,7 +21,7 @@ class _PantallaDeCargaState extends State<PantallaDeCarga> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF008080),
+      backgroundColor: const Color(0xFF008080),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

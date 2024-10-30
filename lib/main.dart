@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Planify',
       theme: ThemeData(
-        fontFamily: 'Poppins', // Asegúrate de esta línea
+        fontFamily: 'Poppins',
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
