@@ -107,12 +107,12 @@ class _CalendarPageState extends State<CalendarPage> {
             formatButtonVisible: false,
             titleCentered: true,
           ),
-          calendarStyle: CalendarStyle(
-            selectedDecoration: const BoxDecoration(
+          calendarStyle: const CalendarStyle(
+            selectedDecoration: BoxDecoration(
               color: Colors.teal,
               shape: BoxShape.circle,
             ),
-            todayDecoration: const BoxDecoration(
+            todayDecoration: BoxDecoration(
               color: Colors.amber,
               shape: BoxShape.circle,
             ),
@@ -124,7 +124,7 @@ class _CalendarPageState extends State<CalendarPage> {
                 return Positioned(
                   bottom: 1,
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.red,
                       shape: BoxShape.circle,
                     ),
@@ -133,7 +133,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   ),
                 );
               }
-              return SizedBox();
+              return const SizedBox();
             },
           ),
         ),
@@ -149,7 +149,7 @@ class _CalendarPageState extends State<CalendarPage> {
 class AddEventForm extends StatefulWidget {
   final Function(Event) onEventAdded;
 
-  const AddEventForm({Key? key, required this.onEventAdded}) : super(key: key);
+  const AddEventForm({super.key, required this.onEventAdded});
 
   @override
   _AddEventFormState createState() => _AddEventFormState();
@@ -194,14 +194,27 @@ class _AddEventFormState extends State<AddEventForm> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
+Widget build(BuildContext context) {
+  return Form(
+    key: _formKey,
+    child: Padding(
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Título
           TextFormField(
-            decoration: const InputDecoration(labelText: 'Título'),
+            decoration: InputDecoration(
+              labelText: 'Título',
+              labelStyle: const TextStyle(fontSize: 16, color: Colors.black87),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.black87, width: 2),
+              ),
+            ),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Por favor ingrese un título';
@@ -212,11 +225,24 @@ class _AddEventFormState extends State<AddEventForm> {
               _title = value!;
             },
           ),
+          const SizedBox(height: 16),
+
+          // Descripción
           TextFormField(
-            decoration: const InputDecoration(labelText: 'Descripción'),
+            decoration: InputDecoration(
+              labelText: 'Descripción',
+              labelStyle: const TextStyle(fontSize: 16, color: Colors.black87),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.black87, width: 2),
+              ),
+            ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Por favor agrege una descripcion';
+                return 'Por favor agregue una descripción';
               }
               return null;
             },
@@ -224,41 +250,99 @@ class _AddEventFormState extends State<AddEventForm> {
               _description = value ?? '';
             },
           ),
+          const SizedBox(height: 16),
+
+          // Selección de Fecha
           Row(
             children: [
               Expanded(
                 child: ElevatedButton(
                   onPressed: () => _selectDate(context),
-                  child: const Text('Seleccionar Fecha'),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    elevation: 3,
+                    backgroundColor: Colors.white,
+                    side: const BorderSide(color: Colors.grey, width: 1),
+                  ),
+                  child: const Text(
+                    'Seleccionar Fecha',
+                    style: TextStyle(color: Colors.black87),
+                  ),
                 ),
               ),
+              const SizedBox(width: 16),
               Text(
                 "${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}",
+                style: const TextStyle(fontSize: 16, color: Colors.black87),
               ),
             ],
           ),
+          const SizedBox(height: 16),
+
+          // Hora de Inicio
           Row(
             children: [
               Expanded(
                 child: ElevatedButton(
                   onPressed: () => _selectTime(context, true),
-                  child: const Text('Hora de Inicio'),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    elevation: 3,
+                    backgroundColor: Colors.white,
+                    side: const BorderSide(color: Colors.grey, width: 1),
+                  ),
+                  child: const Text(
+                    'Hora de Inicio',
+                    style: TextStyle(color: Colors.black87),
+                  ),
                 ),
               ),
-              Text(_startTime.format(context)),
+              const SizedBox(width: 16),
+              Text(
+                _startTime.format(context),
+                style: const TextStyle(fontSize: 16, color: Colors.black87),
+              ),
             ],
           ),
+          const SizedBox(height: 16),
+
+          // Hora de Término
           Row(
             children: [
               Expanded(
                 child: ElevatedButton(
                   onPressed: () => _selectTime(context, false),
-                  child: const Text('Hora de Término'),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    elevation: 3,
+                    backgroundColor: Colors.white,
+                    side: const BorderSide(color: Colors.grey, width: 1),
+                  ),
+                  child: const Text(
+                    'Hora de Término',
+                    style: TextStyle(color: Colors.black87),
+                  ),
                 ),
               ),
-              Text(_endTime.format(context)),
+              const SizedBox(width: 16),
+              Text(
+                _endTime.format(context),
+                style: const TextStyle(fontSize: 16, color: Colors.black87),
+              ),
             ],
           ),
+          const SizedBox(height: 24),
+
+          // Botón de agregar evento
           ElevatedButton(
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
@@ -286,12 +370,29 @@ class _AddEventFormState extends State<AddEventForm> {
                 await addEventToFirestore(event, context);
               }
             },
-            child: const Text('Agregar Evento'),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+              elevation: 5,
+              backgroundColor: Colors.black87,
+            ),
+            child: const Text(
+              'Agregar Evento',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 }
 
 class TopHalfCircleClipper extends CustomClipper<Path> {

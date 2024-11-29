@@ -39,7 +39,7 @@ class AppRouter {
         }
       case '/calendario':
         if (authService.isAuthenticated()) {
-          return MaterialPageRoute(builder: (_) => CalendarPage());
+          return MaterialPageRoute(builder: (_) => const CalendarPage());
         } else {
           return _redirectToLogin();
         }

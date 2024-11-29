@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app_eventos/app/widgets/menu_lateral.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:app_eventos/app/widgets/menu_lateral.dart';
 
 class InicioPage extends StatefulWidget {
   const InicioPage({super.key});
@@ -36,11 +34,15 @@ class _InicioPageState extends State<InicioPage> {
           String endTimeString = userDoc['endTime'];
           DateTime startTime = DateTime.parse(startTimeString);
           DateTime endTime = DateTime.parse(endTimeString);
-          DateTime startDate = DateTime(startTime.year, startTime.month, startTime.day);
+          DateTime startDate =
+              DateTime(startTime.year, startTime.month, startTime.day);
           DateTime endDate = DateTime(endTime.year, endTime.month, endTime.day);
-          DateTime selectedDate = DateTime(today.year, today.month, today.day);
-          if (selectedDate.isAtSameMomentAs(startDate) || selectedDate.isAtSameMomentAs(endDate) ||
-              (selectedDate.isAfter(startDate) && selectedDate.isBefore(endDate))) {
+          DateTime selectedDate =
+              DateTime(today.year, today.month, today.day);
+          if (selectedDate.isAtSameMomentAs(startDate) ||
+              selectedDate.isAtSameMomentAs(endDate) ||
+              (selectedDate.isAfter(startDate) &&
+                  selectedDate.isBefore(endDate))) {
             setState(() {
               eventTitle = userDoc['title'];
               eventDescription = userDoc['description'];
@@ -64,136 +66,86 @@ class _InicioPageState extends State<InicioPage> {
             'Eventos',
             style: TextStyle(
               color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
             ),
           ),
           centerTitle: true,
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: const Icon(
-                  Icons.menu,
-                  color: Colors.white,
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF00BFA6), Color(0xFF008080)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            child: Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 50),
+                child: Text(
+                  "Planifica tu día",
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.9),
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-              );
-            },
+              ),
+            ),
           ),
-          flexibleSpace: Stack(
+        ),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // Centra el contenido verticalmente
             children: [
-              Positioned(
-                top: 50,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 150,
-                  color: const Color(0xFF90cfc4),
+              if (eventTitle != null && eventDescription != null)
+                Card(
+                  elevation: 6,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          'Evento del día:',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.teal),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          eventTitle!,
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black87),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          eventDescription!,
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.black54),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              else
+                const Text(
+                  'No tienes eventos para hoy.',
+                  style: TextStyle(fontSize: 18, color: Colors.grey),
                 ),
-              ),
-              ClipPath(
-                clipper: TopHalfCircleClipper(),
-                child: Container(
-                  height: 150,
-                  color: const Color(0xFF008080),
-                ),
-              ),
             ],
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            child: const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Gestiona tus eventos',
-                    style: TextStyle(fontSize: 24),
-                  ),
-                  SizedBox(height: 20),
-                ],
-              ),
-            ),
-          ),
-          // Card encima del AppBar
-          Positioned(
-            top: 200, // Ajusta esta altura según lo que necesites
-            left: 20,
-            right: 20,
-            child: Card(
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      'Bienvenido a Planify',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Aquí puedes gestionar todos tus eventos de forma rápida y sencilla.',
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 20),
-                    if (eventTitle != null && eventDescription != null) ...[
-                      Text(
-                        'Evento de hoy:',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(eventTitle!),
-                      Text(eventDescription!),
-                    ] else ...[
-                      const Text('No tienes eventos para hoy.'),
-                    ],
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
-}
-
-// Clipper para crear el medio círculo en la parte superior
-class TopHalfCircleClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-
-    // Comienza en la esquina superior izquierda
-    path.lineTo(0, size.height - 100); // Baja un poco en la esquina izquierda
-
-    // Curva en el centro
-    path.quadraticBezierTo(
-      size.width / 2,
-      size.height + 100, // Punto de control para que la curva sea más pronunciada
-      size.width,
-      size.height - 100, // Baja un poco en la esquina derecha
-    );
-
-    // Cierra el camino en la parte superior
-    path.lineTo(size.width, 0); // Línea hacia la esquina superior derecha
-    path.lineTo(0, 0); // Línea hacia la esquina superior izquierda
-    path.close(); // Cierra el camino
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

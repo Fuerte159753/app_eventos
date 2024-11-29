@@ -1,8 +1,3 @@
-import 'dart:io'; 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart' show kIsWeb; 
 import 'package:flutter/material.dart';
 import 'package:app_eventos/app/widgets/menu_lateral.dart';
 import 'package:app_eventos/app/perfil/perfil_functions.dart';
@@ -131,18 +126,17 @@ class _PerfilPageState extends State<PerfilPage> {
                   children: [
                     const SizedBox(height: 10),
                     CircleAvatar(
-                      radius: screenWidth * 0.1,
-                      backgroundImage:
-                          _photoUrl != null ? NetworkImage(_photoUrl!) : null,
-                      child: _photoUrl == null
-                          ? const Icon(
-                              Icons.person,
-                              size: 50,
-                              color: Colors.white,
-                            )
-                          : null,
-                      backgroundColor: Colors.grey,
-                    ),
+                          radius: screenWidth * 0.1,
+                          backgroundImage: _photoUrl != null ? NetworkImage(_photoUrl!) : null,
+                          backgroundColor: Colors.grey,
+                          child: _photoUrl == null
+                              ? const Icon(
+                                  Icons.person,
+                                  size: 50,
+                                  color: Colors.white,
+                                )
+                              : null,
+                        ),
                     const SizedBox(height: 20),
                     Text(
                       'Información del usuario',

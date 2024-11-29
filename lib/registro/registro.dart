@@ -50,6 +50,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
         'email': _emailController.text,
         'edad': _calcularEdad(_selectedDate),
         'photo_url': '',
+        'sincronizacion': '0',
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -139,8 +140,10 @@ class _RegistroScreenState extends State<RegistroScreen> {
 
             // Formulario más alto y con desplazamiento si es necesario
             Container(
-              height: MediaQuery.of(context).size.height * 0.95,  // Más espacio vertical
-              width: MediaQuery.of(context).size.width * 0.95,    // Más espacio horizontal
+              height: MediaQuery.of(context).size.height *
+                  0.95, // Más espacio vertical
+              width: MediaQuery.of(context).size.width *
+                  0.95, // Más espacio horizontal
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -148,7 +151,8 @@ class _RegistroScreenState extends State<RegistroScreen> {
                   topRight: Radius.circular(40),
                 ),
               ),
-              child: SingleChildScrollView(  // Desplazamiento activado
+              child: SingleChildScrollView(
+                // Desplazamiento activado
                 child: Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: Form(

@@ -130,7 +130,6 @@ class _MenuLateralState extends State<MenuLateral> {
             title: const Text('Sincronizar',
                 style: TextStyle(fontSize: 16, color: Color(0xFF008080))),
             onTap: () async {
-              // Llamar a la función de sincronización
               await sincronizarEventosConGoogleCalendar();
             },
           ),
